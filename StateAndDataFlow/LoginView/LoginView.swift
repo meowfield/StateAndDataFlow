@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct LoginView: View {
-    @EnvironmentObject private var loginViewVM: LoginViewViewModel
+    @Bindable private var loginViewVM: LoginViewViewModel
+    
+    init(loginViewVM: LoginViewViewModel) {
+        _loginViewVM = Bindable(wrappedValue: loginViewVM)
+    }
     
     var body: some View {
         VStack {
@@ -23,12 +27,11 @@ struct LoginView: View {
     
     private func login() {
         if !loginViewVM.name.isEmpty {
-            loginViewVM.isLoggedIn.toggle()
+            loginViewVM.isLoggedIn = true
         }
     }
 }
 
 #Preview {
-    LoginView()
-        .environmentObject(LoginViewViewModel())
+    LoginView(loginViewVM: LoginViewViewModel())
 }

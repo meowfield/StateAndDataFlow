@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct RootView: View {
-    @EnvironmentObject private var loginViewVM: LoginViewViewModel
+    @Environment(LoginViewViewModel.self) private var loginViewVM
     
     var body: some View {
         if loginViewVM.isLoggedIn {
             ContentView()
         } else {
-            LoginView()
+            LoginView(loginViewVM: loginViewVM)
         }
     }
 }
 
 #Preview {
     RootView()
-        .environmentObject(LoginViewViewModel())
+        .environment(LoginViewViewModel())
 }

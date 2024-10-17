@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject private var contentViewVM: ContentViewViewModel
-    @EnvironmentObject private var loginViewVM: LoginViewViewModel
+    @Environment(ContentViewViewModel.self) private var contentViewVM
+    @Environment(LoginViewViewModel.self) private var loginViewVM
     
     var body: some View {
         VStack {
@@ -31,12 +31,12 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .environmentObject(ContentViewViewModel())
-        .environmentObject(LoginViewViewModel())
+        .environment(ContentViewViewModel())
+        .environment(LoginViewViewModel())
 }
 
 struct ButtonView: View {
-    @ObservedObject var contentViewVM: ContentViewViewModel
+     var contentViewVM: ContentViewViewModel
     
     var body: some View {
         Button(action: contentViewVM.startTimer) {
