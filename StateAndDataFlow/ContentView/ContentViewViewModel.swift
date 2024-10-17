@@ -11,7 +11,12 @@ import SwiftUI
 final class ContentViewViewModel {
     
     var counter = 3
-    var buttonTitle = "Start"
+    
+    var startButtonTitle = "Start"
+    var logoutButtonTitle = "Log Out"
+    
+    var startButtonColor = Color.red
+    var logoutButtonColor = Color.blue
     
     private var timer: Timer?
     
@@ -28,12 +33,16 @@ final class ContentViewViewModel {
         buttonDidTapped()
     }
     
+    func logout() {
+        
+    }
+    
     @objc private func updateCounter() {
         if counter > 0 {
             counter -= 1
         } else {
             killTimer()
-            buttonTitle = "Reset"
+            startButtonTitle = "Reset"
         }
     }
     
@@ -43,11 +52,11 @@ final class ContentViewViewModel {
     }
     
     private func buttonDidTapped() {
-        if buttonTitle == "Reset" {
+        if startButtonTitle == "Reset" {
             counter = 3
-            buttonTitle = "Start"
+            startButtonTitle = "Start"
         } else {
-            buttonTitle = "Wait..."
+            startButtonTitle = "Wait..."
         }
     }
 }

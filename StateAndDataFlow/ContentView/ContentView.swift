@@ -22,10 +22,28 @@ struct ContentView: View {
             
             Spacer()
             
-            ButtonView(contentViewVM: contentViewVM)
+            ButtonView(
+                //contentViewVM: contentViewVM,
+                title: contentViewVM.startButtonTitle,
+                action: contentViewVM.startTimer,
+                color: contentViewVM.startButtonColor
+            )
             
             Spacer()
+            
+            ButtonView(
+                //contentViewVM: contentViewVM,
+                title: contentViewVM.logoutButtonTitle,
+                action: logout,
+                color: contentViewVM.logoutButtonColor
+            )
+            
         }
+    }
+    
+    private func logout(){
+        loginViewVM.isLoggedIn = false
+        loginViewVM.name = ""
     }
 }
 
@@ -36,17 +54,22 @@ struct ContentView: View {
 }
 
 struct ButtonView: View {
-     var contentViewVM: ContentViewViewModel
+    //var contentViewVM: ContentViewViewModel
+    
+    
+    let title: String
+    let action: () -> Void
+    let color: Color
     
     var body: some View {
-        Button(action: contentViewVM.startTimer) {
-            Text(contentViewVM.buttonTitle)
+        Button(action: action) {
+            Text(title)
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundStyle(.white)
         }
         .frame(width: 200, height: 60)
-        .background(.red)
+        .background(color)
         .clipShape(.rect(cornerRadius: 20))
         .overlay(
             RoundedRectangle(cornerRadius: 20)
