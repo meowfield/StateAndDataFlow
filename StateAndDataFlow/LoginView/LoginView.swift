@@ -16,21 +16,34 @@ struct LoginView: View {
     
     var body: some View {
         VStack {
-            TextField("Enter your name", text: $loginViewVM.name)
-                .multilineTextAlignment(.center)
+            HStack {
+                TextField("Enter your name", text: $loginViewVM.name)
+                    .multilineTextAlignment(.center)
+                Text("\(nameCounter())")
+                    .foregroundColor(nameCounter() > 2 ? .green : .red)
+            }
+            .padding()
             
             Button(action: login) {
                 Label("OK", systemImage: "checkmark.circle")
+                    .disabled(nameCounter() > 2 ? false : true)
             }
         }
     }
     
     private func login() {
-        if !loginViewVM.name.isEmpty {
+        if !loginViewVM.name.isEmpty, loginViewVM.name.count > 2 {
             loginViewVM.isLoggedIn = true
         }
     }
+    
+    private func nameCounter() -> Int {
+        let counter = loginViewVM.name.count
+        return counter
+    }
 }
+
+
 
 #Preview {
     LoginView(loginViewVM: LoginViewViewModel())
