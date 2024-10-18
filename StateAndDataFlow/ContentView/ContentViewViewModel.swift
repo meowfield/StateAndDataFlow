@@ -9,14 +9,8 @@ import SwiftUI
 
 @Observable
 final class ContentViewViewModel {
-    
     var counter = 3
-    
-    var startButtonTitle = "Start"
-    var logoutButtonTitle = "Log Out"
-    
-    var startButtonColor = Color.red
-    var logoutButtonColor = Color.blue
+    var buttonTitle = "Start"
     
     private var timer: Timer?
     
@@ -33,16 +27,12 @@ final class ContentViewViewModel {
         buttonDidTapped()
     }
     
-    func logout() {
-        
-    }
-    
     @objc private func updateCounter() {
         if counter > 0 {
             counter -= 1
         } else {
             killTimer()
-            startButtonTitle = "Reset"
+            buttonTitle = "Reset"
         }
     }
     
@@ -52,11 +42,11 @@ final class ContentViewViewModel {
     }
     
     private func buttonDidTapped() {
-        if startButtonTitle == "Reset" {
+        if buttonTitle == "Reset" {
             counter = 3
-            startButtonTitle = "Start"
+            buttonTitle = "Start"
         } else {
-            startButtonTitle = "Wait..."
+            buttonTitle = "Wait..."
         }
     }
 }

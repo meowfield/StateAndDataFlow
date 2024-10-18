@@ -4,11 +4,33 @@
 //
 //  Created by Alexey Efimov on 06.03.2024.
 //
-
 import SwiftUI
 
-@Observable
-final class LoginViewViewModel {
-    var name = ""
-    var isLoggedIn = false
+final class LoginViewViewModel: ObservableObject {
+    @Published var user = User()
+    
+    var nameIsValid: Bool {
+        user.name.count > 2
+    }
+    
+    var userNameCharCount: String {
+        user.name.count.formatted()
+    }
+    
+    private let storageManager = StorageManager.shared
+    
+    init(user: User = User()) {
+        self.user = user
+    }
+    
+    func login() {
+        user.isLoggedIn.toggle()
+        storageManager.save(user: user)
+    }
+    
+    func logout() {
+        user.name = ""
+        user.isLoggedIn.toggle()
+        storageManager.clear()
+    }
 }

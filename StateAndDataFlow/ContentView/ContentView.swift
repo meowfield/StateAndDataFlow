@@ -8,55 +8,50 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(ContentViewViewModel.self) private var contentViewVM
-    @Environment(LoginViewViewModel.self) private var loginViewVM
+    
+    @EnvironmentObject private var loginViewVM: LoginViewViewModel
+    
+    private let contentViewMV = ContentViewViewModel()
     
     var body: some View {
         VStack {
-            Text("Hi, \(loginViewVM.name)!")
-                .padding(.top, 100)
+            Text("Hi, \(loginViewVM.user.name)!")
                 .font(.largeTitle)
-            Text(contentViewVM.counter.formatted())
+                .offset(x: 0, y: 100)
+            Text(contentViewMV.counter.formatted())
                 .font(.largeTitle)
-                .padding(.top, 100)
+                .offset(x: 0, y: 200)
             
             Spacer()
             
-            ButtonView(
-                //contentViewVM: contentViewVM,
-                title: contentViewVM.startButtonTitle,
-                action: contentViewVM.startTimer,
-                color: contentViewVM.startButtonColor
-            )
-            
-            Spacer()
-            
-            ButtonView(
-                //contentViewVM: contentViewVM,
-                title: contentViewVM.logoutButtonTitle,
-                action: logout,
-                color: contentViewVM.logoutButtonColor
-            )
-            
+            VStack {
+                Spacer()
+                
+                ButtonView(
+                    title: contentViewMV.buttonTitle,
+                    action: contentViewMV.startTimer,
+                    color: .red
+                )
+                
+                Spacer()
+                
+                ButtonView(
+                    title: "Log Out",
+                    action: loginViewVM.logout,
+                    color: .blue
+                )
+            }
         }
     }
-    
-    private func logout(){
-        loginViewVM.isLoggedIn = false
-        loginViewVM.name = ""
-    }
 }
-
+    
 #Preview {
     ContentView()
         .environment(ContentViewViewModel())
-        .environment(LoginViewViewModel())
+
 }
 
 struct ButtonView: View {
-    //var contentViewVM: ContentViewViewModel
-    
-    
     let title: String
     let action: () -> Void
     let color: Color

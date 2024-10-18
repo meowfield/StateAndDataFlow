@@ -8,43 +8,35 @@
 import SwiftUI
 
 struct LoginView: View {
-    @Bindable private var loginViewVM: LoginViewViewModel
-    
-    init(loginViewVM: LoginViewViewModel) {
-        _loginViewVM = Bindable(wrappedValue: loginViewVM)
-    }
+    @EnvironmentObject private var loginViewVM: LoginViewViewModel
     
     var body: some View {
         VStack {
-            HStack {
-                TextField("Enter your name", text: $loginViewVM.name)
-                    .multilineTextAlignment(.center)
-                Text("\(nameCounter())")
-                    .foregroundColor(nameCounter() > 2 ? .green : .red)
-            }
-            .padding()
-            
-            Button(action: login) {
+            TextFieldView(loginViewVM: loginViewVM)
+            Button(action: loginViewVM.login) {
                 Label("OK", systemImage: "checkmark.circle")
-                    .disabled(nameCounter() > 2 ? false : true)
             }
+            .disabled(!loginViewVM.nameIsValid)
         }
-    }
-    
-    private func login() {
-        if !loginViewVM.name.isEmpty, loginViewVM.name.count > 2 {
-            loginViewVM.isLoggedIn = true
-        }
-    }
-    
-    private func nameCounter() -> Int {
-        let counter = loginViewVM.name.count
-        return counter
+        .padding()
     }
 }
 
-
-
-#Preview {
-    LoginView(loginViewVM: LoginViewViewModel())
+struct TextFieldView: View {
+    @ObservedObject var loginViewVM: LoginViewViewModel
+    
+    var body: some View {
+        ZStack {
+            TextField("Type your name...", text: $loginViewVM.user.name)
+                .multilineTextAlignment(.center)
+            HStack {
+                Spacer()
+                Text(loginViewVM.userNameCharCount)
+                    .font(.callout)
+                    .foregroundStyle(loginViewVM.nameIsValid ? .green : .red)
+                    .padding([.top, .trailing])
+            }
+            .padding(.bottom)
+        }
+    }
 }
